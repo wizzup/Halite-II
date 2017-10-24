@@ -44,11 +44,8 @@ add_executable(halite ${SOURCE_FILES})
 
 add_dependencies(halite VERSION_CHECK)
 
-if (APPLE)
-    # No static linkage here - https://stackoverflow.com/questions/5259249/creating-static-mac-os-x-c-build
-    target_link_libraries(halite pthread)
-else()
-    # On Linux, make sure to link using the whole-archive option
-    # See: https://stackoverflow.com/questions/35116327
-    target_link_libraries(halite -Wl,--whole-archive pthread -Wl,--no-whole-archive -static)
-endif()
+target_link_libraries(halite pthread)
+
+# nix-build need install target
+include(GNUInstallDirs)
+install(TARGETS halite DESTINATION ${CMAKE_INSTALL_BINDIR})
